@@ -29,27 +29,22 @@ const Chats: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(scrolled.current);
     if (scrolled.current) {
       const elementRef = element.current;
-      console.log("hello", elementRef);
+
       const handleObserver: IntersectionObserverCallback = (entries) => {
         const target = entries[0];
 
         if (target.isIntersecting) {
-          console.log("intersecting");
-
           setPageNum((prev) => prev + 1);
         }
       };
       const observer = new IntersectionObserver(handleObserver);
       if (elementRef) {
-        console.log("observing");
         observer.observe(elementRef);
       }
       return () => {
         if (elementRef) {
-          console.log("cleaned observed");
           observer.unobserve(elementRef);
         }
       };
@@ -61,7 +56,7 @@ const Chats: React.FC = () => {
       const res = await axios.get(
         `https://qa.corider.in/assignment/chat?page=${pageNum}`
       );
-      console.log("chats fetched", pageNum);
+
       setChats((chats) => [...new Set([...res.data.chats, ...chats])]);
       setLoading(false);
     } catch (e) {
@@ -71,10 +66,8 @@ const Chats: React.FC = () => {
   };
   useEffect(() => {
     if (pageNum === 0) {
-      console.log("bottom scroll");
       scrollToBottom();
     } else {
-      console.log("mid scroll");
       scrollToMid();
     }
   }, [chats]);
@@ -84,7 +77,6 @@ const Chats: React.FC = () => {
     fetchData();
   }, [pageNum]);
 
-  console.log("chats", chats);
   return (
     <Flex
       flexDirection="column"
